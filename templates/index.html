@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Threshold Visual Cryptography</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+    </style>
+</head>
+<body>
+    <h1>Threshold Visual Cryptography (k, n)</h1>
+
+    <div class="section">
+        <form method="POST" enctype="multipart/form-data">
+            <h3>Step 1: Upload Image & Set Parameters</h3>
+            <input type="file" name="image" required><br><br>
+            Resize to: <input type="number" name="resize" value="100"> px<br><br>
+            Threshold k: <input type="number" name="k" min="2" required><br><br>
+            Total Shares n: <input type="number" name="n" min="2" required><br><br>
+            <input type="submit" name="generate" value="Generate Shares">
+        </form>
+    </div>
+
+    {% if shares %}
+    <div class="section">
+        <form method="POST">
+            <h3>Step 2: Select Shares for Reconstruction</h3>
+            <input type="hidden" name="n" value="{{ n }}">
+            {% for i in range(1, n+1) %}
+                <div class="share-box">
+                    <label>
+                        <input type="checkbox" name="selected_shares" value="{{ i }}"> Share {{ i }}
+                    </label><br>
+                    <img src="/static/shares/share_{{ i }}.png" width="100">
+                </div>
+            {% endfor %}
+            <br><br>
+            <input type="submit" name="reconstruct" value="Reconstruct Image">
+        </form>
+    </div>
+
+    <div class="section">
+        <h3>Reconstructed Image</h3>
+        <img src="/static/output/reconstructed.png" width="300">
+        <br><a href="/static/output/reconstructed.png" download>Download Reconstructed Image</a>
+    </div>
+
+  <div class="section" id="progressive-reveal" data-steps="{{ reveal_steps|default(0) }}">
+  <h3>Progressive Reveal</h3>
+
+  <label for="revealSlider">Reveal Level:</label>
+  <input type="range" id="revealSlider" min="1" max="{{ reveal_steps if reveal_steps>0 else 1 }}" value="1" />
+  <span id="revealValue">1</span> / <span id="revealMax">{{ reveal_steps if reveal_steps>0 else 1 }}</span>
+
+  <br/><br/>
+  <img id="revealImage" src="{{ url_for('static', filename='reveal/step_1.png') }}" width="300" alt="Progressive Reveal" />
+  <div id="revealHint" style="text-align:center; color:#c33; display:none; margin-top:8px;">
+    Reveal image not found. Check static/reveal/ files.
+  </div>
+
+  <script>
+  (function () {
+    const container = document.getElementById('progressive-reveal');
+    const steps = Math.max(0, parseInt(container.dataset.steps || '0', 10));
+    const slider = document.getElementById('revealSlider');
+    const revealValue = document.getElementById('revealValue');
+    const revealMax = document.getElementById('revealMax');
+    const revealImage = document.getElementById('revealImage');
+    const hint = document.getElementById('revealHint');
+
+    const safeSteps = Math.max(1, steps);
+    slider.min = 1;
+    slider.max = safeSteps;
+    slider.value = 1;
+    revealValue.textContent = '1';
+    revealMax.textContent = String(safeSteps);
+
+    function updateImage(idx) {
+      // cache-bust so newly generated images are fetched
+      const url = `/static/reveal/step_${idx}.png?v=${Date.now()}`;
+      revealImage.style.opacity = '1';
+      hint.style.display = 'none';
+      revealImage.src = url;
+    }
+
+    slider.addEventListener('input', function () {
+      const val = Number(slider.value);
+      revealValue.textContent = String(val);
+      updateImage(val);
+    });
+
+    // show hint if the image fails to load
+    revealImage.addEventListener('error', function () {
+      revealImage.style.opacity = '0.6';
+      hint.style.display = 'block';
+    });
+
+    // initial load
+    updateImage(1);
+  })();
+  </script>
+</div>
+    {% endif %}
+</body>
+</html>

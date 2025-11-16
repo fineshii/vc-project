@@ -1,0 +1,119 @@
+/* Base styles */
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #0078D4;
+    margin-bottom: 30px;
+}
+
+h3 {
+    margin-top: 0;
+    color: #444;
+}
+
+/* Section layout */
+.section {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 40px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Form inputs */
+input[type="file"],
+input[type="number"],
+input[type="submit"] {
+    display: block;
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+    background-color: #0078D4;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #005A9E;
+}
+
+/* Share grid */
+.share-box {
+    display: inline-block;
+    text-align: center;
+    margin: 10px;
+    width: 120px;
+}
+
+.share-box img {
+    width: 100px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Progressive Reveal Slider */
+#revealSlider {
+    width: 300px;
+    margin-top: 10px;
+    accent-color: #0078D4;
+}
+
+#revealValue {
+    font-weight: bold;
+    margin-left: 10px;
+    color: #0078D4;
+}
+
+/* Reveal Image Styling */
+#revealImage {
+    display: block;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Reconstructed Image */
+img[src*="reconstructed.png"] {
+    display: block;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Download link */
+a[download] {
+    display: inline-block;
+    margin-top: 10px;
+    color: #0078D4;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a[download]:hover {
+    text-decoration: underline;
+}
+
+/* Flash messages (if using Flask flash) */
+.flash {
+    background-color: #ffeeba;
+    border: 1px solid #f0ad4e;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    color: #856404;
+}
